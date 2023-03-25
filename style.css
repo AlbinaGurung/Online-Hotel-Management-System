@@ -27,7 +27,7 @@ h2 {
 
 input {
 	display: block;
-	border: 2px solid #ccc;
+	border: 1px solid #ccc;
 	width: 95%;
 	padding: 10px;
 	margin: 10px auto;
@@ -40,7 +40,7 @@ label {
 }
 
 button {
-	float: right;
+	float: center;
 	background: #555;
 	padding: 10px 15px;
 	color: #fff;
@@ -65,7 +65,7 @@ h1 {
 	color: #fff;
 }
 
-a {
+ a {
 	float: right;
 	background: #555;
 	padding: 10px 15px;
@@ -74,7 +74,18 @@ a {
 	margin-right: 10px;
 	border: none;
 	text-decoration: none;
-}
+} 
 a:hover{
 	opacity: .7;
 }
+.heading{
+	color:white;
+	background-color: green;
+	/* width: 50px; */
+	padding: 10px 15 px;
+}
+.header {
+	background-color: #F1F1F1;
+	text-align: center;
+	padding: 20px;
+  }

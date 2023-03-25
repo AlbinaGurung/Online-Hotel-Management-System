@@ -7,11 +7,14 @@
 <body>
 
 <?php //Code for Sign-up
+
 if(isset($_GET['sign-up']))
 {  
 	?>
-	<form action="" method="post">
+	<div style="text-align:center; color:white;font-size:20px;width: 500px;;background:green;border: 2px solid #ccc;border-radius: 15px">Online Hotel Mangement System</div>
 
+	<form action="" method="post">
+         
 	      <label>Phone No.</label>
 	      <input type="number" name="phone" placeholder="Phone No."><br>
 
@@ -30,11 +33,14 @@ if(isset($_GET['sign-up']))
 
 
 <?php //Code for Sign-in
+
 }
 else
 {
 ?>
-     <form action="login.php" method="post">
+     
+     <div style="text-align:center; color:white;font-size:20px;width: 500px;background:green;border: 2px solid #ccc;border-radius: 15px">Online Hotel Mangement System</div>
+	 <form action="login.php" method="post">
      	<h2>LOGIN</h2>
      	<?php if (isset($_GET['error'])) { ?>
      		<p class="error"><?php echo $_GET['error']; ?></p>
@@ -46,14 +52,20 @@ else
      	<input type="password" name="password" placeholder="Password"><br>
 
      	<button type="submit" name="login_btn">Login</button>
-		 <div class="">
+
+		 <!-- <div class="">
 					<div class="">
 						Don't have an account? <a href="?sign-up=1" class=">Sign Up</a>
 					</div>
 					<div class="d-flex justify-content-center links">
 						<a href="#" class="text-white">Forgot your password?</a>
 					</div>
-				</div>
+				</div> -->
+            <br>Don't have an account? <a href="" class=""> Sign Up</a>
+			<br><a href="" class="">Forgot Your Password?</a>
+			
+
+
          </form>
 <?php
 
@@ -68,24 +80,39 @@ if(isset($_POST['register_btn']))
 	
 require_once("db_conn.php");
 
-	$u_username  = mysqli_real_escape_string($conn, $_POST['uname']);
-	$u_phone  = mysqli_real_escape_string($conn, $_POST['phone']);
-	$u_password  = mysqli_real_escape_string($conn,sha1($_POST['password']));
-	$u_retype  = mysqli_real_escape_string($conn, sha1($_POST['retype']));
-	
-	
 
-	if($u_password == $u_retype)
+
+$password = $_POST['password']; // plain password
+$username=$_POST['uname'];
+$phone=$_POST['phone'];
+$retype=$_POST['retype'];
+
+
+if($u_password == $u_retype)
 	{
-				//Query to Insert.
-				mysqli_query($conn, "INSERT INTO users(username, phone, password) VALUES('". $u_username
-				."', '". $u_phone."','". $u_password."')") or die(mysqli_error($conn));
+		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		
 
+		$stmt=$conn->prepare(INSERT INTO `users` ( `username`, `password`, `phone`) VALUES ( :username,:password,:phone));
+     // $stmt=$conn->prepare(INSERT into users(username,password,phone) VALUE (:username, :password,:phone));
+       
+	  // Encrypted password
+	  $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
+        $stmt->bindParam("username", $username);
+       $stmt->bindParam("password", $hashedPassword);
+      $stmt->bindParam("phone",$phone);
+
+    $stmt->execute();
+		
 				?>
 		<script> location.assign("?sign-up=1&registered=1");</script>
 
    <?php
 	}
+
+	 
+	
 	else
 	{
 		?>
@@ -135,10 +162,10 @@ if (isset($_POST['uname']) && isset($_POST['password']))
 			$row = mysqli_fetch_assoc($result);
             if ($row['username'] === $uname && $row['password'] === $pass) 
 			{
-            	$_SESSION['user_name'] = $row['username'];
+            	$_SESSION['username'] = $row['username'];
             	
             	$_SESSION['id'] = $row['id'];
-            	header("Location: dashboard.php");
+            	header("Location: Dashboard.php");
 		        exit();
             }
 			else

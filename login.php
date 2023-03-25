@@ -29,19 +29,22 @@ if (isset($_POST['uname']) && isset($_POST['password']))
 
 else
 {
-		$sql = "SELECT * FROM users WHERE user_name='$uname' AND password='$pass'";
+		//$sql = "SELECT * FROM users WHERE username='$uname' AND password='$pass'";
+		$result = mysqli_query($conn, "SELECT * FROM `users` WHERE username = '". $uname."' AND password = '". $pass."' " );
+		// or die(mysqli_error($con));
 
-		$result = mysqli_query($conn, $sql);
+
+		//$result = mysqli_query($conn, $sql);
 
 		if (mysqli_num_rows($result) === 1) 
 		{
 			$row = mysqli_fetch_assoc($result);
-            if ($row['user_name'] === $uname && $row['password'] === $pass) 
+            if ($row['username'] === $uname && $row['password'] === $pass) 
 			{
-            	$_SESSION['user_name'] = $row['user_name'];
+            	$_SESSION['username'] = $row['username'];
             	$_SESSION['name'] = $row['name'];
             	$_SESSION['id'] = $row['id'];
-            	header("Location: dashboard.php");
+            	header("Location: Dashboard.php");
 		        exit();
             }
 			else
