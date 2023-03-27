@@ -61,7 +61,8 @@ else
 						<a href="#" class="text-white">Forgot your password?</a>
 					</div>
 				</div> -->
-            <br>Don't have an account? <a href="" class=""> Sign Up</a>
+				<button type="submit" name="register_btn" >Sign Up</button>
+            <!-- <br>Don't have an account? <a href="" class=""> Sign Up</a> -->
 			<br><a href="" class="">Forgot Your Password?</a>
 			
 
@@ -93,17 +94,16 @@ if($u_password == $u_retype)
 		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
 
-		$stmt=$conn->prepare(INSERT INTO `users` ( `username`, `password`, `phone`) VALUES ( :username,:password,:phone));
-     // $stmt=$conn->prepare(INSERT into users(username,password,phone) VALUE (:username, :password,:phone));
-       
+		$stmt=$conn->prepare("INSERT INTO `users` ( `username`, `password`, `phone`) VALUES ( :username,:password,:phone)");
+    
 	  // Encrypted password
 	  $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
         $stmt->bindParam("username", $username);
-       $stmt->bindParam("password", $hashedPassword);
-      $stmt->bindParam("phone",$phone);
+        $stmt->bindParam("password", $hashedPassword);
+        $stmt->bindParam("phone",$phone);
 
-    $stmt->execute();
+        $stmt->execute();
 		
 				?>
 		<script> location.assign("?sign-up=1&registered=1");</script>
